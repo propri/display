@@ -1,9 +1,21 @@
 <html>
     <head>
         <title>Share images</title>
-        <script src="/public/script/test.js"></script>
+        <script src="/script/common.js"></script>
+        <script src="/script/server.js"></script>
     </head>
     <body>
-        <h1>Test</h1>
+        <div class="root">
+            <div class="preview">
+                <img id="img" />
+            </div>
+            <div class="select">
+                <p>
+                    <button onclick="updateList()">update</button>
+                </p>
+                <ul id="images">
+                </ul>
+            </div>
+        </div>
     </body>
 </html>

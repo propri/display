@@ -2,11 +2,13 @@
 
 const fs = require('fs')
 const express = require('express')
-
-const app = express()
+//const bodyParser = require('body-parser')
 
 var displayedFile = 'none.png'
-const imgPath = '/public/img/'
+const imgPath = 'img/'
+
+const getFrontendImagePath = () => `/${imgPath}${displayedFile}`
+const getServerImageDir = () => `public/${imgPath}`
 
 function sseDemo(req, res) {
   let messageId = 0
@@ -22,6 +24,12 @@ function sseDemo(req, res) {
   })
 }
 
+const app = express()
+
+app.use(express.static('public'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
 app.get('/event-stream', (req, res) => {
   // sse setup
   res.writeHead(200, {
@@ -34,17 +42,40 @@ app.get('/event-stream', (req, res) => {
   sseDemo(req, res)
 })
 
+function sendHTML(res, path) {
+  res.set('Content-Type', 'text/html')
+  const html = fs.readFileSync(path)
+  res.send(html)
+}
+
 app.get('/server', (req, res) => {
-  const serverSite = fs.readFileSync('server.html')
-  res.write(serverSite)
+  sendHTML(res, 'server.html')
 })
 
-app.use(express.static('public'))
-
-app.all('*', (req, res, next) => {
-  console.log('connect!')
-  next()
+app.get('/client', (req, res) => {
+  sendHTML(res, 'client.html')
 })
+
+app.get('/current', (req, res) => {
+  const response = {
+    img: getFrontendImagePath(),
+  }
+  res.send(response) 
+})
+
+app.post('/update', (req, res) => {
+  displayedFile = req.body.img
+})
+
+app.get('/images', (req, res) => {
+  const files = fs.readdirSync(getServerImageDir())
+  res.send(files)
+})
+
+//app.all('*', (req, res, next) => {
+  //console.log('connect!')
+  //next()
+//})
 
 app.listen(11223)
 
