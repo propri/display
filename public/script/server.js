@@ -21,25 +21,31 @@ function setImageListener() {
   updateDisplayedImage(img)
 }
 
-async function showImageList() {
+function showPreviewImg() {
+  const img = this.getAttribute(urlAttribute)
+
+  document.querySelector('#previewImg').src = `/img/${img}`
+}
+
+async function updateList() {
   const images = await updateImageList()
 
   const list = document.querySelector('#images')
   for (let i = 0; i < list.children.length; i++) {
     let child = list.children[i]
-    child.removeEventListener(setImageListener)
+    child.removeEventListener('click', setImageListener)
+    child.removeEventListener('mouseover', showPreviewImg)
     list.removeChild(child)
   }
-
-  console.log(images)
 
   images.forEach(img => {
     const li = document.createElement('li')
     li.addEventListener('click', setImageListener)
+    li.addEventListener('mouseover', showPreviewImg)
     li.textContent = img
     li.setAttribute(urlAttribute, img)
     list.appendChild(li)
   })
 }
 
-showImageList()
+updateList()

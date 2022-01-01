@@ -1,0 +1,37 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.root {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 50% 1fr;
+    grid-template-rows: 50% 50%;
+    grid-template-areas:
+    "current select"
+    "preview select";
+}
+
+.current {
+    grid-area: current;
+    border: 1px solid red;
+}
+
+.preview {
+    grid-area: preview;
+}
+
+.select {
+    grid-area: select;
+}
+
+ul {
+    list-style: none;
+}
