@@ -30,6 +30,16 @@ app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
+/* potentiell loggen (wird bei jedem request durchgeführt) */
+app.all('*', (req, res, next) => {
+  //console.log('connect!')
+  //console.log(req.method)
+  if (req.method === 'POST') {
+    //console.log(req.body)
+  }
+  next()
+})
+
 app.get('/event-stream', (req, res) => {
   // sse setup
   res.writeHead(200, {
@@ -65,17 +75,13 @@ app.get('/current', (req, res) => {
 
 app.post('/update', (req, res) => {
   displayedFile = req.body.img
+  res.send('update successful')
 })
 
 app.get('/images', (req, res) => {
   const files = fs.readdirSync(getServerImageDir())
   res.send(files)
 })
-
-//app.all('*', (req, res, next) => {
-  //console.log('connect!')
-  //next()
-//})
 
 app.listen(11223)
 

@@ -31,7 +31,7 @@ async function updateList() {
   const images = await updateImageList()
 
   const list = document.querySelector('#images')
-  for (let i = 0; i < list.children.length; i++) {
+  for (let i = list.children.length - 1; i >= 0; i--) {
     let child = list.children[i]
     child.removeEventListener('click', setImageListener)
     child.removeEventListener('mouseover', showPreviewImg)

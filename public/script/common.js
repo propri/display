@@ -23,5 +23,5 @@ async function updateImage() {
   document.querySelector('#img').src = lastImg
 }
 
-const iv = setInterval(updateImage, 1000)
+let iv = setInterval(updateImage, 1000)
 
