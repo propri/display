@@ -1,0 +1,11 @@
+{
+  "name": "display",
+  "version": "0.1",
+  "description": "share images on different systems from master",
+  "main": "app.js",
+  "author": "Wilhelm Mailaender <wilhelm@mailaender-home.de>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
