@@ -11,5 +11,10 @@
   },
   "devDependencies": {
     "eslint": "^8.10.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "watch": "nodemon app.js",
+    "run": "node app.js"
   }
 }
