@@ -29,9 +29,24 @@ img {
 }
 
 .select {
+    padding-left: 1em;
     grid-area: select;
+}
+
+.select > p {
+    padding: 0.5em;
+    padding-left: 0;
 }
 
 ul {
     list-style: none;
+}
+
+button {
+    padding: 0.5em;
+}
+
+input {
+    padding: 0.5em;
+    width: 70%;
 }

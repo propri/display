@@ -10,6 +10,32 @@ async function updateDisplayedImage(img) {
   await fetch(updateImageUrl, options)
 }
 
+async function updateExtImg() {
+  const extImg = document.querySelector('#extImgInput')?.value || ''
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({ img: extImg }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  await fetch(updateExtImageUrl, options)
+}
+
+async function updateIframe() {
+  const iframe = document.querySelector('#iframeInput')?.value || ''
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({ iframe }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  await fetch(updateIframeUrl, options)
+}
+
 async function updateImageList() {
   const response = await fetch(imagesUrl)
   const images = await response.json()

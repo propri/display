@@ -1,28 +1,40 @@
 #!/usr/bin/env node
 
+const port = 8080
+
 const fs = require('fs')
 const express = require('express')
 //const bodyParser = require('body-parser')
 
-var displayedFile = 'none.png'
+const displayTypes = {
+  images: 'images',
+  externalImages: 'externalImages',
+  iframe: 'iframe',
+}
+
+let displayedFile = 'none.png'
+let externalImage = ''
+let displayedIframe = ''
+let showType = displayTypes.images
+
 const imgPath = 'img/'
 
 const getFrontendImagePath = () => `/${imgPath}${displayedFile}`
 const getServerImageDir = () => `public/${imgPath}`
 
-function sseDemo(req, res) {
-  let messageId = 0
+//function sseDemo(req, res) {
+  //let messageId = 0
 
-  sendData = (data) => {
-    res.write(`id: ${messageId}\n`)
-    res.write(`data: ${JSON.stringify(data)}\n\n`)
-    messageId += 1
-  }
+  //sendData = (data) => {
+    //res.write(`id: ${messageId}\n`)
+    //res.write(`data: ${JSON.stringify(data)}\n\n`)
+    //messageId += 1
+  //}
 
-  req.on('close', () => {
-    // nothing to do?
-  })
-}
+  //req.on('close', () => {
+    //// nothing to do?
+  //})
+//}
 
 const app = express()
 
@@ -40,17 +52,17 @@ app.all('*', (req, res, next) => {
   next()
 })
 
-app.get('/event-stream', (req, res) => {
-  // sse setup
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-  })
-  res.write('\n')
+//app.get('/event-stream', (req, res) => {
+  //// sse setup
+  //res.writeHead(200, {
+    //'Content-Type': 'text/event-stream',
+    //'Cache-Control': 'no-cache',
+    //'Connection': 'keep-alive',
+  //})
+  //res.write('\n')
 
-  sseDemo(req, res)
-})
+  //sseDemo(req, res)
+//})
 
 function sendHTML(res, path) {
   res.set('Content-Type', 'text/html')
@@ -68,13 +80,28 @@ app.get('/client', (req, res) => {
 
 app.get('/current', (req, res) => {
   const response = {
-    img: getFrontendImagePath(),
+    img: showType === displayTypes.images ? getFrontendImagePath() : externalImage,
+    iframe: displayedIframe,
+    show: showType,
   }
   res.send(response) 
 })
 
 app.post('/update', (req, res) => {
   displayedFile = req.body.img
+  showType = displayTypes.images,
+  res.send('update successful')
+})
+
+app.post('/updateExt', (req, res) => {
+  externalImage = req.body.img
+  showType = displayTypes.externalImages,
+  res.send('update successful')
+})
+
+app.post('/updateIframe', (req, res) => {
+  displayedIframe = req.body.iframe
+  showType = displayTypes.iframe
   res.send('update successful')
 })
 
@@ -83,5 +110,5 @@ app.get('/images', (req, res) => {
   res.send(files)
 })
 
-app.listen(8080)
+app.listen(port)
 
