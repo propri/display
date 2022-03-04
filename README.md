@@ -15,3 +15,4 @@ display content on another device
   * Bottom left is a preview of the next file (file hovered on the right side)
 * Click on a file name on the right to display this image to the client(s)
 * Use the update button to show images added after starting the server
+* Use the inputs to enter the URL to an external image / an iframe
