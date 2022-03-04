@@ -1,3 +1,5 @@
+import { CONSTS } from './common.js'
+
 async function updateDisplayedImage(img) {
   const options = {
     method: 'POST',
@@ -7,7 +9,7 @@ async function updateDisplayedImage(img) {
     },
   }
 
-  await fetch(updateImageUrl, options)
+  await fetch(CONSTS.updateImageUrl, options)
 }
 
 async function updateExtImg() {
@@ -20,8 +22,10 @@ async function updateExtImg() {
     },
   }
 
-  await fetch(updateExtImageUrl, options)
+  await fetch(CONSTS.updateExtImageUrl, options)
 }
+
+document.querySelector('#updateExtImg').addEventListener('click', updateExtImg)
 
 async function updateIframe() {
   const iframe = document.querySelector('#iframeInput')?.value || ''
@@ -33,22 +37,24 @@ async function updateIframe() {
     },
   }
 
-  await fetch(updateIframeUrl, options)
+  await fetch(CONSTS.updateIframeUrl, options)
 }
 
+document.querySelector('#updateIframe').addEventListener('click', updateIframe)
+
 async function updateImageList() {
-  const response = await fetch(imagesUrl)
+  const response = await fetch(CONSTS.imagesUrl)
   const images = await response.json()
   return images
 }
 
 function setImageListener() {
-  const img = this.getAttribute(urlAttribute)
+  const img = this.getAttribute(CONSTS.urlAttribute)
   updateDisplayedImage(img)
 }
 
 function showPreviewImg() {
-  const img = this.getAttribute(urlAttribute)
+  const img = this.getAttribute(CONSTS.urlAttribute)
 
   document.querySelector('#previewImg').src = `/img/${img}`
 }
@@ -69,7 +75,7 @@ async function updateList() {
     li.addEventListener('click', setImageListener)
     li.addEventListener('mouseover', showPreviewImg)
     li.textContent = img
-    li.setAttribute(urlAttribute, img)
+    li.setAttribute(CONSTS.urlAttribute, img)
     list.appendChild(li)
   })
 }

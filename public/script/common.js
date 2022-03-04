@@ -1,19 +1,19 @@
 /* ============== CONSTS ==== */
-const currentImgUrl = '/current'
-const updateImageUrl = '/update'
-const updateExtImageUrl = '/updateExt'
-const updateIframeUrl = '/updateIframe'
-const imagesUrl = '/images'
-
-const urlAttribute = 'data-url'
+export const CONSTS = {
+  currentImgUrl : '/current',
+  updateImageUrl : '/update',
+  updateExtImageUrl : '/updateExt',
+  updateIframeUrl : '/updateIframe',
+  imagesUrl : '/images',
+  urlAttribute : 'data-url',
+}
 /* ======================== */
 
 let lastImg = ''
 let lastIframe = ''
-let show = ''
 
 async function getCurrent() {
-  const response = await fetch(currentImgUrl)
+  const response = await fetch(CONSTS.currentImgUrl)
   const result = await response.json()
   return result
 }
@@ -62,4 +62,8 @@ async function showVariant(variant) {
 }
 
 let iv = setInterval(updateDisplay, 1000)
+
+window.addEventListener('unload', () => {
+  clearInterval(iv)
+})
 

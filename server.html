@@ -2,8 +2,8 @@
     <head>
         <title>Share images</title>
         <link rel="stylesheet" href="/styles/server.css">
-        <script src="/script/common.js"></script>
-        <script src="/script/server.js"></script>
+        <!--<script src="/script/common.js"></script>-->
+        <script src="/script/server.js" type="module"></script>
     </head>
     <body>
         <div class="root">
@@ -21,11 +21,11 @@
             <div class="select">
                 <p>
                     <input type="text" id="extImgInput">
-                    <button onclick="updateExtImg()">External Image</button>
+                    <button id="updateExtImg">External Image</button>
                 </p>
                 <p>
                     <input type="text" id="iframeInput">
-                    <button onclick="updateIframe()">Iframe</button>
+                    <button id="updateIframe">Iframe</button>
                 </p>
                 <p>
                     <button onclick="updateList()">Update Image List</button>
