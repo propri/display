@@ -25,7 +25,6 @@ async function updateExtImg() {
   await fetch(CONSTS.updateExtImageUrl, options)
 }
 
-document.querySelector('#updateExtImg').addEventListener('click', updateExtImg)
 
 async function updateIframe() {
   const iframe = document.querySelector('#iframeInput')?.value || ''
@@ -40,7 +39,6 @@ async function updateIframe() {
   await fetch(CONSTS.updateIframeUrl, options)
 }
 
-document.querySelector('#updateIframe').addEventListener('click', updateIframe)
 
 async function updateImageList() {
   const response = await fetch(CONSTS.imagesUrl)
@@ -80,4 +78,13 @@ async function updateList() {
   })
 }
 
-updateList()
+
+function setup() {
+  document.querySelector('#updateList').addEventListener('click', updateList)
+  document.querySelector('#updateIframe').addEventListener('click', updateIframe)
+  document.querySelector('#updateExtImg').addEventListener('click', updateExtImg)
+
+  updateList()
+}
+
+setup()

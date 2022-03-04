@@ -1,1 +1,1 @@
-import * as common from './common.js'
+import './common.js'
