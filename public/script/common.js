@@ -1,12 +1,17 @@
 /* ============== CONSTS ==== */
 export const CONSTS = {
-  currentImgUrl : '/current',
-  updateImageUrl : '/update',
-  updateExtImageUrl : '/updateExt',
-  updateIframeUrl : '/updateIframe',
-  imagesUrl : '/images',
-  urlAttribute : 'data-url',
+  currentImgUrl: '/current',
+  updateImageUrl: '/update',
+  updateExtImageUrl: '/updateExt',
+  updateIframeUrl: '/updateIframe',
+  imagesUrl: '/images',
+  dirsUrl: '/dirs',
+  selectDir: '/selectDir',
+  urlAttribute: 'data-url',
+  dirAttribute: 'data-dir',
 }
+const updateInterval = 1 * 1000
+//const updateInterval = 1 * 1000 * 10
 /* ======================== */
 
 let lastImg = ''
@@ -61,7 +66,7 @@ async function showVariant(variant) {
   }
 }
 
-let iv = setInterval(updateDisplay, 1000)
+let iv = setInterval(updateDisplay, updateInterval)
 
 window.addEventListener('unload', () => {
   clearInterval(iv)

@@ -3,6 +3,7 @@
 const port = 8080
 
 const fs = require('fs')
+const path = require('path')
 const express = require('express')
 //const bodyParser = require('body-parser')
 
@@ -19,22 +20,13 @@ let showType = displayTypes.images
 
 const imgPath = 'img/'
 
-const getFrontendImagePath = () => `/${imgPath}${displayedFile}`
-const getServerImageDir = () => `public/${imgPath}`
+let subDir = ''
 
-//function sseDemo(req, res) {
-  //let messageId = 0
+//const getFrontendImagePath = () => `/${imgPath}${displayedFile}`
+const getFrontendImagePath = () => `/${imgPath}${subDir}${displayedFile}`
+const getServerImageDir = () => path.join('public', imgPath)
 
-  //sendData = (data) => {
-    //res.write(`id: ${messageId}\n`)
-    //res.write(`data: ${JSON.stringify(data)}\n\n`)
-    //messageId += 1
-  //}
-
-  //req.on('close', () => {
-    //// nothing to do?
-  //})
-//}
+const getSelectedImageDir = () => path.join(getServerImageDir(), subDir)
 
 const app = express()
 
@@ -51,18 +43,6 @@ app.all('*', (req, res, next) => {
   }
   next()
 })
-
-//app.get('/event-stream', (req, res) => {
-  //// sse setup
-  //res.writeHead(200, {
-    //'Content-Type': 'text/event-stream',
-    //'Cache-Control': 'no-cache',
-    //'Connection': 'keep-alive',
-  //})
-  //res.write('\n')
-
-  //sseDemo(req, res)
-//})
 
 function sendHTML(res, path) {
   res.set('Content-Type', 'text/html')
@@ -84,7 +64,7 @@ app.get('/current', (req, res) => {
     iframe: displayedIframe,
     show: showType,
   }
-  res.send(response) 
+  res.send(response)
 })
 
 app.post('/update', (req, res) => {
@@ -105,8 +85,32 @@ app.post('/updateIframe', (req, res) => {
   res.send('update successful')
 })
 
+app.post('/selectDir', (req, res) => {
+  const dir = req.body.dir
+  subDir = dir === "" ? dir : path.join(subDir, dir)
+  res.send('update successful')
+})
+
+app.get('/dirs', (req, res) => {
+  //const dirContents = fs.readdirSync(getServerImageDir())
+  const dirContents = fs.readdirSync(getSelectedImageDir())
+  const folders = dirContents.filter((file) => {
+    const stat = fs.lstatSync(path.join(getSelectedImageDir(), file))
+    return stat.isDirectory()
+  })
+  res.send(folders)
+})
+
 app.get('/images', (req, res) => {
-  const files = fs.readdirSync(getServerImageDir())
+  //const dirContents = fs.readdirSync(getServerImageDir())
+  const dirContents = fs.readdirSync(getSelectedImageDir())
+  const files = dirContents.filter((file) => {
+    if (file.startsWith('.')) {
+      return false
+    }
+    const stat = fs.lstatSync(path.join(getSelectedImageDir(), file))
+    return !stat.isDirectory()
+  })
   res.send(files)
 })
 

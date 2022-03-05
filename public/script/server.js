@@ -1,5 +1,7 @@
 import { CONSTS } from './common.js'
 
+let currentDir = ''
+
 async function updateDisplayedImage(img) {
   const options = {
     method: 'POST',
@@ -54,7 +56,7 @@ function setImageListener() {
 function showPreviewImg() {
   const img = this.getAttribute(CONSTS.urlAttribute)
 
-  document.querySelector('#previewImg').src = `/img/${img}`
+  document.querySelector('#previewImg').src = `/img/${currentDir}${img}`
 }
 
 async function updateList() {
@@ -68,7 +70,7 @@ async function updateList() {
     list.removeChild(child)
   }
 
-  images.forEach(img => {
+  images.forEach((img) => {
     const li = document.createElement('li')
     li.addEventListener('click', setImageListener)
     li.addEventListener('mouseover', showPreviewImg)
@@ -78,12 +80,62 @@ async function updateList() {
   })
 }
 
+async function setDirListener() {
+  const dir = this.getAttribute(CONSTS.dirAttribute)
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({dir}),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+  await fetch(CONSTS.selectDir, options)
+
+  currentDir = dir === '' ? dir : currentDir + dir
+
+  updateDirs()
+}
+
+async function updateDirList() {
+  const response = await fetch(CONSTS.dirsUrl)
+  const dirs = await response.json()
+  return dirs
+}
+
+async function updateDirs() {
+  const dirs = await updateDirList()
+
+  const list = document.querySelector('#dirs')
+  for (let i = list.children.length - 1; i >= 0; i--) {
+    let child = list.children[i]
+    child.removeEventListener('click', setDirListener)
+    list.removeChild(child)
+  }
+
+  const li = document.createElement('li')
+  li.addEventListener('click', setDirListener)
+  li.textContent = '[top]'
+  li.setAttribute(CONSTS.dirAttribute, '')
+  list.appendChild(li)
+
+
+  dirs.forEach((dir) => {
+    const li = document.createElement('li')
+    li.addEventListener('click', setDirListener)
+    li.textContent = dir
+    li.setAttribute(CONSTS.dirAttribute, `${dir}/`)
+    list.appendChild(li)
+  })
+
+  updateList()
+}
 
 function setup() {
   document.querySelector('#updateList').addEventListener('click', updateList)
   document.querySelector('#updateIframe').addEventListener('click', updateIframe)
   document.querySelector('#updateExtImg').addEventListener('click', updateExtImg)
 
+  updateDirs()
   updateList()
 }
 
