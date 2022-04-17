@@ -2,10 +2,13 @@
 
 const port = 8080
 
+const ip = require('ip')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
 //const bodyParser = require('body-parser')
+//
+const myIP = ip.address()
 
 const displayTypes = {
   images: 'images',
@@ -116,4 +119,4 @@ app.get('/images', (req, res) => {
 
 app.listen(port)
 
-console.log(`listening on port ${port}. http://localhost:${port}/server`)
+console.log(`listening on port ${port}. http://localhost:${port}/server http://${myIP}:${port}/client`)
