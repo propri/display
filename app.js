@@ -114,6 +114,7 @@ app.get('/images', (req, res) => {
     const stat = fs.lstatSync(path.join(getSelectedImageDir(), file))
     return !stat.isDirectory()
   })
+  files.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
   res.send(files)
 })
 
