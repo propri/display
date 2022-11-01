@@ -50,3 +50,18 @@ input {
     padding: 0.5em;
     width: 70%;
 }
+
+ul#images {
+    padding-left: 0;
+}
+
+#images > li {
+    background-color: #EEE;
+    padding: 0.25em;
+    margin-bottom: 2px;
+}
+
+#images > li:hover {
+    background-color: #EEF;
+}
+
