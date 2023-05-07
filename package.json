@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "display",
   "version": "0.1",
   "description": "share images on different systems from master",

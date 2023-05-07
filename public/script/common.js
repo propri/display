@@ -71,4 +71,3 @@ let iv = setInterval(updateDisplay, updateInterval)
 window.addEventListener('unload', () => {
   clearInterval(iv)
 })
-
