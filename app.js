@@ -25,8 +25,14 @@ const imgPath = 'img/'
 
 let subDir = ''
 
+let completeDisplayedPath = ''
+
+const updateDisplayedFile = () => {
+  completeDisplayedPath = `/${imgPath}${subDir}${displayedFile}`
+}
+
 //const getFrontendImagePath = () => `/${imgPath}${displayedFile}`
-const getFrontendImagePath = () => `/${imgPath}${subDir}${displayedFile}`
+const getFrontendImagePath = () => completeDisplayedPath
 const getServerImageDir = () => path.join('public', imgPath)
 
 const getSelectedImageDir = () => path.join(getServerImageDir(), subDir)
@@ -38,7 +44,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 /* potentiell loggen (wird bei jedem request durchgeführt) */
-app.all('*', (req, res, next) => {
+app.all('*', (req, _, next) => {
   //console.log('connect!')
   //console.log(req.method)
   if (req.method === 'POST') {
@@ -53,17 +59,18 @@ function sendHTML(res, path) {
   res.send(html)
 }
 
-app.get('/server', (req, res) => {
+app.get('/server', (_, res) => {
   sendHTML(res, 'server.html')
 })
 
-app.get('/client', (req, res) => {
+app.get('/client', (_, res) => {
   sendHTML(res, 'client.html')
 })
 
-app.get('/current', (req, res) => {
+app.get('/current', (_, res) => {
   const response = {
-    img: showType === displayTypes.images ? getFrontendImagePath() : externalImage,
+    img:
+      showType === displayTypes.images ? getFrontendImagePath() : externalImage,
     iframe: displayedIframe,
     show: showType,
   }
@@ -72,14 +79,13 @@ app.get('/current', (req, res) => {
 
 app.post('/update', (req, res) => {
   displayedFile = req.body.img
-  showType = displayTypes.images,
-  res.send('update successful')
+  updateDisplayedFile()
+  ;(showType = displayTypes.images), res.send('update successful')
 })
 
 app.post('/updateExt', (req, res) => {
   externalImage = req.body.img
-  showType = displayTypes.externalImages,
-  res.send('update successful')
+  ;(showType = displayTypes.externalImages), res.send('update successful')
 })
 
 app.post('/updateIframe', (req, res) => {
@@ -90,11 +96,11 @@ app.post('/updateIframe', (req, res) => {
 
 app.post('/selectDir', (req, res) => {
   const dir = req.body.dir
-  subDir = dir === "" ? dir : path.join(subDir, dir)
+  subDir = dir === '' ? dir : path.join(subDir, dir)
   res.send('update successful')
 })
 
-app.get('/dirs', (req, res) => {
+app.get('/dirs', (_, res) => {
   //const dirContents = fs.readdirSync(getServerImageDir())
   const dirContents = fs.readdirSync(getSelectedImageDir())
   const folders = dirContents.filter((file) => {
@@ -104,7 +110,7 @@ app.get('/dirs', (req, res) => {
   res.send(folders)
 })
 
-app.get('/images', (req, res) => {
+app.get('/images', (_, res) => {
   //const dirContents = fs.readdirSync(getServerImageDir())
   const dirContents = fs.readdirSync(getSelectedImageDir())
   const files = dirContents.filter((file) => {
@@ -120,4 +126,6 @@ app.get('/images', (req, res) => {
 
 app.listen(port)
 
-console.log(`listening on port ${port}. http://localhost:${port}/server http://${myIP}:${port}/client`)
+console.log(
+  `listening on port ${port}. http://localhost:${port}/server http://${myIP}:${port}/client`
+)
