@@ -94,22 +94,26 @@ app.post('/updateIframe', (req, res) => {
   res.send('update successful')
 })
 
+/* change to selected folder */
 app.post('/selectDir', (req, res) => {
   const dir = req.body.dir
-  subDir = dir === '' ? dir : path.join(subDir, dir)
+  subDir = dir === '' ? dir : path.normalize(path.join(subDir, dir))
   res.send('update successful')
 })
 
+/* list of folders in current folder */
 app.get('/dirs', (_, res) => {
   //const dirContents = fs.readdirSync(getServerImageDir())
   const dirContents = fs.readdirSync(getSelectedImageDir())
   const folders = dirContents.filter((file) => {
-    const stat = fs.lstatSync(path.join(getSelectedImageDir(), file))
+    //const stat = fs.lstatSync(path.join(getSelectedImageDir(), file))
+    const stat = fs.statSync(path.join(getSelectedImageDir(), file))
     return stat.isDirectory()
   })
-  res.send(folders)
+  res.send(subDir === '' ? folders : ['..', ...folders])
 })
 
+/* list of images in current folder */
 app.get('/images', (_, res) => {
   //const dirContents = fs.readdirSync(getServerImageDir())
   const dirContents = fs.readdirSync(getSelectedImageDir())

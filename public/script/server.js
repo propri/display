@@ -5,7 +5,7 @@ let currentDir = ''
 async function updateDisplayedImage(img) {
   const options = {
     method: 'POST',
-    body: JSON.stringify({img}),
+    body: JSON.stringify({ img }),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -27,7 +27,6 @@ async function updateExtImg() {
   await fetch(CONSTS.updateExtImageUrl, options)
 }
 
-
 async function updateIframe() {
   const iframe = document.querySelector('#iframeInput')?.value || ''
   const options = {
@@ -40,7 +39,6 @@ async function updateIframe() {
 
   await fetch(CONSTS.updateIframeUrl, options)
 }
-
 
 async function updateImageList() {
   const response = await fetch(CONSTS.imagesUrl)
@@ -84,7 +82,7 @@ async function setDirListener() {
   const dir = this.getAttribute(CONSTS.dirAttribute)
   const options = {
     method: 'POST',
-    body: JSON.stringify({dir}),
+    body: JSON.stringify({ dir }),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -118,11 +116,10 @@ async function updateDirs() {
   li.setAttribute(CONSTS.dirAttribute, '')
   list.appendChild(li)
 
-
   dirs.forEach((dir) => {
     const li = document.createElement('li')
     li.addEventListener('click', setDirListener)
-    li.textContent = dir
+    li.textContent = dir === '..' ? '[up]' : dir
     li.setAttribute(CONSTS.dirAttribute, `${dir}/`)
     list.appendChild(li)
   })
@@ -132,8 +129,12 @@ async function updateDirs() {
 
 function setup() {
   document.querySelector('#updateList').addEventListener('click', updateList)
-  document.querySelector('#updateIframe').addEventListener('click', updateIframe)
-  document.querySelector('#updateExtImg').addEventListener('click', updateExtImg)
+  document
+    .querySelector('#updateIframe')
+    .addEventListener('click', updateIframe)
+  document
+    .querySelector('#updateExtImg')
+    .addEventListener('click', updateExtImg)
 
   updateDirs()
   updateList()
