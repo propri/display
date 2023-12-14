@@ -1,67 +1,67 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 img {
-    height: 100%;
-    width: 100%;
-    object-fit: contain;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 .root {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 50% 1fr;
-    grid-template-rows: 50% 50%;
-    grid-template-areas:
-    "current select"
-    "preview select";
+  height: 100%;
+  display: grid;
+  grid-template-columns: 50% 1fr;
+  grid-template-rows: 50% 50%;
+  grid-template-areas:
+    'current select'
+    'preview select';
 }
 
 .current {
-    grid-area: current;
-    border: 1px solid red;
+  grid-area: current;
+  border: 1px solid red;
 }
 
 .preview {
-    grid-area: preview;
+  grid-area: preview;
 }
 
 .select {
-    padding-left: 1em;
-    grid-area: select;
+  padding-left: 1em;
+  grid-area: select;
+  overflow: scroll;
 }
 
 .select > p {
-    padding: 0.5em;
-    padding-left: 0;
+  padding: 0.5em;
+  padding-left: 0;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 button {
-    padding: 0.5em;
+  padding: 0.5em;
 }
 
 input {
-    padding: 0.5em;
-    width: 70%;
+  padding: 0.5em;
+  width: 70%;
 }
 
 ul#images {
-    padding-left: 0;
+  padding-left: 0;
 }
 
 #images > li {
-    background-color: #EEE;
-    padding: 0.25em;
-    margin-bottom: 2px;
+  background-color: #eee;
+  padding: 0.25em;
+  margin-bottom: 2px;
 }
 
 #images > li:hover {
-    background-color: #EEF;
+  background-color: #eef;
 }
-
